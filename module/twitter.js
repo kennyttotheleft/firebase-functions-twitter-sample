@@ -1,6 +1,15 @@
-const Twitter = require('twitter');
+/**
+ * Twitter for Node.js
+ * @link https://www.npmjs.com/package/twitter
+ */
+const Twitter = require('twitter')
+/**
+ * A simple in-memory cache for node.js
+ * @link https://www.npmjs.com/package/memory-cache
+ */
+const cache = require('memory-cache')
 const twitterCredential = require('../config/twitter-credential.json')
-const client = new Twitter(twitterCredential);
+const client = new Twitter(twitterCredential)
 
 /**
  * 対象 Twitter ユーザーの いいね したツイートリスト取得
@@ -15,13 +24,21 @@ const client = new Twitter(twitterCredential);
  * }
  */
 function getFavList(options, callback) {
-    console.log('getFavList', options);
-    if (!options) options = {}
-    client.get('favorites/list', options, (error, tweets, response) => {
-        callback(tweets, error)
-    });
+    const durationSec = 60
+    const apiPath = 'favorites/list'
+    const tweets = cache.get(apiPath)
+    if (tweets) {
+        callback(tweets, false)
+    } else {
+        if (!options) options = {}
+        client.get(apiPath, options, (error, tweets, response) => {
+            if (tweets) {
+                cache.put(apiPath, tweets, durationSec * 1000)
+            }
+            callback(tweets, error)
+        });
+    }
 }
-
 module.exports = {
     getFavList: getFavList
 }
