@@ -28,7 +28,7 @@ function getFavList(options, callback) {
     const apiPath = 'favorites/list'
     const tweets = cache.get(apiPath)
     if (tweets) {
-        callback(tweets, false)
+        return callback(tweets, false)
     } else {
         if (!options) options = {}
         client.get(apiPath, options, (error, tweets, response) => {
@@ -36,7 +36,7 @@ function getFavList(options, callback) {
                 cache.put(apiPath, tweets, durationSec * 1000)
             }
             callback(tweets, error)
-        });
+        })
     }
 }
 module.exports = {

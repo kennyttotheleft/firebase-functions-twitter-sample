@@ -25,33 +25,33 @@ const url = require('url')
 const express = require('express')
 const settings = require('./config/settings.json')
 const twitter = require('./module/twitter')
-const app = express();
+const app = express()
 
-app.use(compression());
+app.use(compression())
 app.use(cors({
   origin: true
-}));
+}))
 app.get('/favoliteList', (request, response) => {
   let options = {}
   if ('FAVOLITE_TWEET_LIST_OPTIONS' in settings) {
-    options = settings.FAVOLITE_TWEET_LIST_OPTIONS;
+    options = settings.FAVOLITE_TWEET_LIST_OPTIONS
   }
-  const urlInfo = url.parse(request.url, true);
+  const urlInfo = url.parse(request.url, true)
   if (urlInfo.query.since_id) {
-    options.since_id = urlInfo.query.since_id;
+    options.since_id = urlInfo.query.since_id
   }
   twitter.getFavList(options, (result, error) => {
     if (error) {
-      response.status(500).json(error);
+      response.status(500).json(error)
     } else {
+      /**
+       *  Firebase - Cache-Control を設定する
+       * @link https://firebase.google.com/docs/hosting/functions?hl=ja#set_cache_control
+       */
       response
-        /**
-         *  Firebase - Cache-Control を設定する
-         * @link https://firebase.google.com/docs/hosting/functions?hl=ja#set_cache_control
-         */
         .set('Cache-Control', 'public, max-age=300, s-maxage=600')
-        .status(200).json(result);
+        .status(200).json(result)
     }
-  });
-});
-exports.api = functions.https.onRequest(app);
+  })
+})
+exports.api = functions.https.onRequest(app)
