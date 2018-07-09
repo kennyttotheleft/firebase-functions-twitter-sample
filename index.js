@@ -2,6 +2,11 @@
  * HTTP リクエスト経由で関数を呼び出す
  * @link https://firebase.google.com/docs/functions/http-events?hl=ja
  */
+
+/**
+ * Firebase SDK for Cloud Functions
+ * @link https://www.npmjs.com/package/firebase-functions
+ */
 const functions = require('firebase-functions')
 /**
  * Node.js compression middleware
@@ -24,7 +29,16 @@ const url = require('url')
  */
 const express = require('express')
 const settings = require('./config/settings.json')
-const twitter = require('./module/twitter')
+const twitterModule = require('./module/twitter')
+const config = functions.config()
+const twitter = new twitterModule({
+  credential: {
+    consumer_key: config.credential.twitter.consumer_key,
+    consumer_secret: config.credential.twitter.consumer_secret,
+    access_token_key: config.credential.twitter.access_token_key,
+    access_token_secret: config.credential.twitter.access_token_secret
+  }
+})
 const app = express()
 
 app.use(compression())
@@ -40,6 +54,7 @@ app.get('/favoliteList', (request, response) => {
   if (urlInfo.query.since_id) {
     options.since_id = urlInfo.query.since_id
   }
+
   twitter.getFavList(options, (result, error) => {
     if (error) {
       response.status(500).json(error)
