@@ -1,72 +1,42 @@
-/**
- * HTTP リクエスト経由で関数を呼び出す
- * @link https://firebase.google.com/docs/functions/http-events?hl=ja
- */
-
-/**
- * Firebase SDK for Cloud Functions
- * @link https://www.npmjs.com/package/firebase-functions
- */
 const functions = require('firebase-functions')
-/**
- * Node.js compression middleware
- * @link https://www.npmjs.com/package/compression
- */
-const compression = require('compression')
-/**
- * Node.js CORS middleware
- * @link https://www.npmjs.com/package/cors
- */
-const cors = require('cors')
-/**
- * The core `url` packaged standalone for use with Browserify.
- * @link https://www.npmjs.com/package/url
- */
-const url = require('url')
-/**
- * Fast, unopinionated, minimalist web framework
- * @link https://www.npmjs.com/package/express
- */
-const express = require('express')
-const settings = require('./config/settings.json')
-const twitterModule = require('./module/twitter')
-const config = functions.config()
-const twitter = new twitterModule({
-  credential: {
-    consumer_key: config.credential.twitter.consumer_key,
-    consumer_secret: config.credential.twitter.consumer_secret,
-    access_token_key: config.credential.twitter.access_token_key,
-    access_token_secret: config.credential.twitter.access_token_secret
-  }
-})
-const app = express()
-
-app.use(compression())
-app.use(cors({
-  origin: true
-}))
-app.get('/favoliteList', (request, response) => {
-  let options = {}
-  if ('FAVOLITE_TWEET_LIST_OPTIONS' in settings) {
-    options = settings.FAVOLITE_TWEET_LIST_OPTIONS
-  }
-  const urlInfo = url.parse(request.url, true)
-  if (urlInfo.query.since_id) {
-    options.since_id = urlInfo.query.since_id
-  }
-
-  twitter.getFavList(options, (result, error) => {
-    if (error) {
-      response.status(500).json(error)
-    } else {
-      /**
-       *  Firebase - Cache-Control を設定する
-       * @link https://firebase.google.com/docs/hosting/functions?hl=ja#set_cache_control
-       */
-      response
-        .set('Cache-Control', 'public, max-age=300, s-maxage=600')
-        .status(200).json(result)
-    }
-  })
+const App = require('./app')
+const app = new App({
+    /**
+     * Firebase SDK for Cloud Functions
+     * @link https://www.npmjs.com/package/firebase-functions
+     */
+    config: functions.config(),
+    /**
+     * Node.js compression middleware
+     * @link https://www.npmjs.com/package/compression
+     */
+    compression: require('compression'),
+    /**
+     * Node.js CORS middleware
+     * @link https://www.npmjs.com/package/cors
+     */
+    cors: require('cors'),
+    /**
+     * The core `url` packaged standalone for use with Browserify.
+     * @link https://www.npmjs.com/package/url
+     */
+    url: require('url'),
+    /**
+     * Fast, unopinionated, minimalist web framework
+     * @link https://www.npmjs.com/package/express
+     */
+    express: require('express'),
+    /**
+     * A simple in-memory cache for node.js
+     * @link https://www.npmjs.com/package/memory-cache
+     */
+    cache: require('memory-cache'),
+    /**
+     * Twitter for Node.js
+     * @link https://www.npmjs.com/package/twitter
+     */
+    TwitterClient: require('twitter'),
+    TwitterModule: require('./modules/twitter'),
+    settings: require('./config/settings.json')
 })
 exports.api = functions.https.onRequest(app)

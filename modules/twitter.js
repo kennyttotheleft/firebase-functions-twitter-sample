@@ -1,20 +1,13 @@
+'use strict'
 /**
- * @classdesc Twitter API 呼び出しミドルウェア
+ * Twitter API 呼び出しミドルウェア
  * @constructor
  */
 class TwitterModule {
-    constructor(setting) {
-        /**
-         * Twitter for Node.js
-         * @link https://www.npmjs.com/package/twitter
-         */
-        const Twitter = require('twitter')
-        this.client = new Twitter(setting.credential)
-        /**
-         * A simple in-memory cache for node.js
-         * @link https://www.npmjs.com/package/memory-cache
-         */
-        this.cache = require('memory-cache')
+
+    constructor(options) {
+        this.client = options.client
+        this.cache = options.cache
     }
 
     /**
@@ -47,4 +40,5 @@ class TwitterModule {
         }
     }
 }
-module.exports = TwitterModule;
+
+module.exports = TwitterModule
