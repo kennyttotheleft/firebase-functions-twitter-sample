@@ -18,18 +18,18 @@ const twitter = new TwitterModule({
 
 describe('twiiter.js', () => {
 
-    test('credentials are set for retrieving tweets', () => {
+    test('Twitter API のクレデンシャルがセットされていること', () => {
         expect(config.credential.twitter.consumer_key).not.toBeNull()
         expect(config.credential.twitter.consumer_secret).not.toBeNull()
         expect(config.credential.twitter.access_token_key).not.toBeNull()
         expect(config.credential.twitter.access_token_secret).not.toBeNull()
     })
 
-    test('settings are set for retrieving tweets', () => {
+    test('Tweet 取得設定がセットされていること', () => {
         expect(settings.FAVOLITE_TWEET_LIST_OPTIONS.screen_name).not.toBeNull()
     })
 
-    test('get favolite tweet list without options', done => {
+    test('お気に入り Tweet リストが取得できること（取得設定オプションなし）', done => {
         twitter.getFavList(false, (tweets, error) => {
             expect(error).toBeFalsy()
             expect(error).toMatchSnapshot()
@@ -39,7 +39,7 @@ describe('twiiter.js', () => {
         })
     })
 
-    test('get favolite tweet list with options', done => {
+    test('お気に入り Tweet リストが取得できること（取得設定オプションあり）', done => {
         const options = settings.FAVOLITE_TWEET_LIST_OPTIONS
         twitter.getFavList(options, (tweets, error) => {
             expect(error).toBeFalsy()

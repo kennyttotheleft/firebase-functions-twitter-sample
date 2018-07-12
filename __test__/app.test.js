@@ -24,7 +24,7 @@ const app = new App({
 })
 const agent = request.agent(app)
 
-describe('GET /topics', function () {
+describe('GET /topics', () => {
     test('トピックリストが JSON 形式で取得できること', (done) => {
         agent.get('/topics').end((error, response) => {
             expect(error).toBeFalsy()
