@@ -1,9 +1,9 @@
 /**
- * @class app
- * HTTP リクエスト経由で関数を呼び出す
- * @link https://firebase.google.com/docs/functions/http-events?hl=ja
+ * @class App
+ * API logic class
  */
 class App {
+
   constructor(options) {
     const config = options.config
     const compression = options.compression
@@ -13,16 +13,17 @@ class App {
     const cache = options.cache
     const TwitterClient = options.TwitterClient
     const TwitterModule = options.TwitterModule
-    const settings = options.settings
+    const twitterClient = new TwitterClient({
+      consumer_key: config.credential.twitter.consumer_key,
+      consumer_secret: config.credential.twitter.consumer_secret,
+      access_token_key: config.credential.twitter.access_token_key,
+      access_token_secret: config.credential.twitter.access_token_secret
+    })
     const twitterModule = new TwitterModule({
-      clinet: new TwitterClient({
-        consumer_key: config.credential.twitter.consumer_key,
-        consumer_secret: config.credential.twitter.consumer_secret,
-        access_token_key: config.credential.twitter.access_token_key,
-        access_token_secret: config.credential.twitter.access_token_secret
-      }),
+      client: twitterClient,
       cache: cache
     })
+    const settings = options.settings
 
     const app = express()
     app.use(compression())
