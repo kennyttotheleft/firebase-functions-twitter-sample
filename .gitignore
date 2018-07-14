@@ -1,6 +1,7 @@
 node_modules/
 coverage/
+__snapshot__/
 *.log
+*.snap
 .runtimeconfig.json
 config/settings.json
-*.snap

@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 6.11.5
+sudo: false
+notifications:
+  email: false
+deploy:
+  provider: firebase
+  skip_cleanup: true

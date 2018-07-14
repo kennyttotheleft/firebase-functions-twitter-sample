@@ -1,9 +1,9 @@
 'use strict'
-jest.mock('../../modules/twitter')
+jest.mock('../../modules/twitter-module')
 const settings = require('../../config/settings.json')
 const functions = require('firebase-functions')
 const Twitter = require('twitter')
-const TwitterModule = require('../../modules/twitter')
+const TwitterModule = require('../../modules/twitter-module')
 
 const config = functions.config()
 const twitter = new TwitterModule({
@@ -13,7 +13,8 @@ const twitter = new TwitterModule({
         access_token_key: config.credential.twitter.access_token_key,
         access_token_secret: config.credential.twitter.access_token_secret
     }),
-    cache: require('memory-cache')
+    cache: require('memory-cache'),
+    settings: settings.twitter
 })
 
 describe('twiiter.js', () => {
@@ -26,7 +27,8 @@ describe('twiiter.js', () => {
     })
 
     test('Tweet 取得設定がセットされていること', () => {
-        expect(settings.FAVOLITE_TWEET_LIST_OPTIONS.screen_name).not.toBeNull()
+        expect(settings.twitter.favorite_tweet_list.screen_name).not.toBeNull()
+        expect(settings.twitter.favorite_tweet_list.count_limit).not.toBeNull()
     })
 
     test('お気に入り Tweet リストが取得できること（取得設定オプションなし）', done => {

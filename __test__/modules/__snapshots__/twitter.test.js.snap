@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`twiiter.js get favolite tweet list with options 1`] = `false`;
+exports[`twiiter.js お気に入り Tweet リストが取得できること（取得設定オプションあり） 1`] = `false`;
 
-exports[`twiiter.js get favolite tweet list with options 2`] = `
+exports[`twiiter.js お気に入り Tweet リストが取得できること（取得設定オプションあり） 2`] = `
 Array [
   Object {
     "contributors": null,
@@ -179,9 +179,9 @@ Array [
 ]
 `;
 
-exports[`twiiter.js get favolite tweet list without options 1`] = `false`;
+exports[`twiiter.js お気に入り Tweet リストが取得できること（取得設定オプションなし） 1`] = `false`;
 
-exports[`twiiter.js get favolite tweet list without options 2`] = `
+exports[`twiiter.js お気に入り Tweet リストが取得できること（取得設定オプションなし） 2`] = `
 Array [
   Object {
     "contributors": null,
