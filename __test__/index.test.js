@@ -1,4 +1,5 @@
 'use strict'
+jest.mock('../modules/twitter-module')
 const apiFunctions = require('../index');
 
 describe('Cloud Functions', () => {
