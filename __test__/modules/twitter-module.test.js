@@ -25,10 +25,8 @@ describe('twiiter.js', () => {
     })
 
     test('お気に入り Tweet リストが取得できること', done => {
-        twitter.getFavList(twitterConf.fav_list, (tweets, error) => {
+        twitter.getFavList(twitterConf, (tweets, error) => {
             expect(error).toBeFalsy()
-            expect(error).toMatchSnapshot()
-            expect(tweets).toMatchSnapshot()
             expect(tweets.length).toBeGreaterThan(0)
             done()
         })
