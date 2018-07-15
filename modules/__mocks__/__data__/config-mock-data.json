@@ -1,0 +1,14 @@
+{
+    "twitter": {
+        "credential": {
+            "access_token_key": "YOUR_ACCESS_TOKEY_KEY",
+            "access_token_secret": "YOUR_ACCESS_TOKEY_SECRET",
+            "consumer_key": "YOUR_CONSUMER_KEY",
+            "consumer_secret": "YOUR_CONSUMER_SECRET"
+        },
+        "fav_list": {
+            "screen_name": "noradio",
+            "count_limit": 10
+        }
+    }
+}

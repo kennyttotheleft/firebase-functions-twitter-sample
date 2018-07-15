@@ -16,13 +16,9 @@ const cors = require('cors')({
     origin: true
 })
 
-/**
- * Application settings
- */
-const settings = require('./config/settings.json')
-
-const config = functions.config()
-
+const ConfigModule = require('./modules/config-module')
+const configModule = new ConfigModule(functions.config())
+const config = configModule.getAll()
 
 // [START Topics API trigger]
 /**
@@ -48,16 +44,10 @@ exports.topics = functions.https.onRequest((request, response) => {
              */
             const cache = require('memory-cache')
 
-            const twitterModule = new TwitterModule({
-                client: new TwitterClient({
-                    consumer_key: config.credential.twitter.consumer_key,
-                    consumer_secret: config.credential.twitter.consumer_secret,
-                    access_token_key: config.credential.twitter.access_token_key,
-                    access_token_secret: config.credential.twitter.access_token_secret
-                }),
-                cache: cache,
-                settings: settings.twitter
-            })
+            const twitterConf = config.twitter
+            const twitterModule = new TwitterModule(
+                new TwitterClient(twitterConf.credential),
+                cache)
 
             let options = {}
             if ('since_id' in request && request.since_id) {
@@ -65,6 +55,15 @@ exports.topics = functions.https.onRequest((request, response) => {
             }
             if ('count' in request && request.count) {
                 options.count = request.count
+            }
+            if('fav_list' in twitterConf) {
+                const favListConf = twitterConf.fav_list
+                if ('screen_name' in favListConf && favListConf.screen_name) {
+                    options.screen_name = favListConf.screen_name
+                }
+                if ('count_limit' in favListConf && favListConf.count_limit) {
+                    options.count_limit = favListConf.count_limit
+                }
             }
 
             twitterModule.getFavList(options, (result, error) => {

@@ -1,14 +1,18 @@
 'use strict'
 /**
- * Twitter API 呼び出しミドルウェア
+ * Twitter データ処理モジュール
  * @constructor
  */
 class TwitterModule {
 
-    constructor(options) {
-        this.client = options.client
-        this.cache = options.cache
-        this.settings = options.settings
+    /**
+     *
+     * @param {TwitterClient} client Twitter API リクエスト用クライアントインスタンス
+     * @param {memory-cache} cache キャッシュ用インスタンス（memory-cache）
+     */
+    constructor(client, cache, settings) {
+        this.client = client
+        this.cache = cache
     }
 
     /**
@@ -32,28 +36,23 @@ class TwitterModule {
         } else {
             const self = this;
             let requestParams = {}
-            let defaultOptions = false
-            if ('favorite_tweet_list' in this.settings) {
-                defaultOptions = this.settings.favorite_tweet_list
-                if('screen_name' in defaultOptions) {
-                    requestParams.screen_name = defaultOptions.screen_name
-                }
-                if('count_limit' in defaultOptions) {
-                    requestParams.count = defaultOptions.count_limit
+            if ('screen_name' in options) {
+                requestParams.screen_name = options.screen_name
+            }
+            if ('count_limit' in options) {
+                requestParams.count = options.count_limit
+            }
+            if ('count' in options && 'count_limit' in options) {
+                if (options.count_limit > options.count) {
+                    requestParams.count = options.count
+                } else {
+                    requestParams.count = options.count_limit
                 }
             }
-
-            if (options) {
-                if ('count' in options && 'count_limit' in defaultOptions) {
-                    if (defaultOptions.count_limit > options.count) {
-                        requestParams.count = options.count
-                    }
-                }
-
-                if('since_id' in options) {
-                    requestParams.since_id = options.since_id
-                }
+            if ('since_id' in options) {
+                requestParams.since_id = options.since_id
             }
+
             this.client.get(apiPath, requestParams, (error, tweets, response) => {
                 if (tweets) {
                     self.cache.put(apiPath, tweets, cacheLifeTimeSec * 1000)

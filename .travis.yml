@@ -4,6 +4,3 @@ node_js:
 sudo: false
 notifications:
   email: false
-deploy:
-  provider: firebase
-  skip_cleanup: true
