@@ -3,5 +3,6 @@ coverage/
 __snapshot__/
 *.log
 *.snap
+.firebaserc
 .runtimeconfig.json
 config/settings.json
