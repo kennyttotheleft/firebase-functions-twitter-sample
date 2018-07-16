@@ -1,6 +1,5 @@
 language: node_js
 node_js:
   - 6.11.5
-sudo: false
-notifications:
-  email: false
+  - stable
+script: cd functions && npm install && npm run test
