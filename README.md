@@ -1,9 +1,8 @@
 [![Build Status](https://travis-ci.org/tanakaoriginal/firebase-functions-twitter-sample.svg?branch=master)](https://travis-ci.org/tanakaoriginal/firebase-functions-twitter-sample)
 
-# Firebase Cloud Functions で Twitter API と連携するサンプルです。
+# Cloud Functions for Firebase で Twitter API と連携するサンプル
 
-    Firebase の Cloud Functions で Twitter API と連携するサンプルです。
-    特定のスクリーンネームのユーザーがお気にいりしたツイートリストを取得します。
+    特定のスクリーンネームのユーザーがお気にいりしたツイートリストを取得する API を Cloud Functions で提供します。
 
 ## プロジェクトのセットアップ
 
