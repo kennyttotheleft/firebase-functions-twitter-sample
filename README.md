@@ -1,5 +1,4 @@
 [![Build Status](https://travis-ci.org/tanakaoriginal/firebase-functions-twitter-sample.svg?branch=master)](https://travis-ci.org/tanakaoriginal/firebase-functions-twitter-sample)
-[![Coverage Status](https://coveralls.io/repos/github/tanakaoriginal/firebase-functions-twitter-sample/badge.svg?branch=master)](https://coveralls.io/github/tanakaoriginal/firebase-functions-twitter-sample?branch=master)
 
 # Cloud Functions for Firebase で Twitter API と連携するサンプル
 
